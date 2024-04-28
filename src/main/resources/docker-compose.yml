@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  elasticsearch:
+    image: elasticsearch:latest
+    environment:
+      - discovery.type=single-node
+
+  logstash:
+    image: logstash:latest
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/config.conf:ro  # Mount your Logstash configuration
+      - ./logstash-data:/usr/share/logstash/data  # Optional volume to persist processed data
+    depends_on:
+      - ecommerce  # Logstash depends on the ecommerce application being up first (assuming it writes logs)
+
+  kibana:
+    image: kibana:latest
+    ports:
+      - "5601:5601"  # Map Kibana port to host port 5601
+    depends_on:
+      - elasticsearch  # Kibana depends on Elasticsearch to be running
+
+volumes:
+  logstash-data:  # Optional volume to persist Logstash processed data
+
+services:
+  # Add your ecommerce application service here (assuming it's a separate service)
+  ecommerce:
+    image: your-ecommerce-application-image  # Replace with your image name
+    # ... other configurations for your ecommerce application

@@ -1,0 +1,69 @@
+
+spring:
+  application:
+    name: ecommerce
+  main: 
+    allow-circular-references: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    
+server:
+  servlet:
+    session: 
+      persistent: false
+      timeout: -1
+    multipart:
+      max-file-size: 1GB
+      max-request-size: 1GB
+      enabled: true
+  port: 8080
+  context-path: /TerpWeb
+  error: 
+    whitelabel: 
+      enabled: false
+  tomcat:
+    max-swallow-size: -1
+    connection-timeout: 1500
+    
+#base directory
+ecommerce: 
+  base: 
+    dir: E:\\personal\\ecommerce
+    
+logging: 
+  level: 
+    org: 
+      springframework: 
+        web: DEBUG
+      hibernate: ERROR
+      jdbc:
+        core: TRACE
+    com: 
+      terp: 
+        web: DEBUG  
+    root: ERROR
+  appender:
+    stdout:
+      name: stdout
+      class: org.apache.log4j.ConsoleAppender
+      layout:
+        class: org.apache.log4j.PatternLayout
+        pattern: "%d %p [%c] - <%m>%n"
+  logger:
+    org.springframework.web: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: "${ecommerce.base.dir}/LOGS/ecommerce.log"
